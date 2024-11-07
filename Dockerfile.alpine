@@ -1,0 +1,24 @@
+FROM alpine:latest
+RUN apk update && \
+    apk add --no-cache \
+    build-base \
+    linux-headers \
+    autoconf \
+    automake \
+    libtool \
+    git \
+    vim \
+    gawk \
+    wget \
+    xz
+
+WORKDIR /opt/build
+RUN wget -q https://github.com/strace/strace/releases/download/v6.11/strace-6.11.tar.xz && \
+    tar -xf strace-6.11.tar.xz && \
+    cd strace-6.11 && \
+    ./configure --enable-mpers=no && \
+    make && \
+    make install
+
+# Clean up unnecessary files to reduce image size
+RUN rm -rf /opt/build/strace-6.11* /var/cache/apk/*
