@@ -1,0 +1,33 @@
+FROM centos:centos7
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
+    && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
+    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+RUN yum -y update && \
+    yum -y install \
+    epel-release && \
+    yum -y install \
+    make \
+    gcc \
+    gcc-c++ \
+    kernel-devel \
+    autoconf \
+    automake \
+    libtool \
+    git \
+    vim \
+    gawk \
+    tar \
+    wget \
+    ca-certificates \
+    xz && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+WORKDIR /opt/build
+RUN wget --no-check-certificate -c https://github.com/strace/strace/releases/download/v6.11/strace-6.11.tar.xz && \
+    tar -xf strace-6.11.tar.xz && \
+    cd strace-6.11 && \
+    ./configure --enable-mpers=no && \
+    make && \
+    make install

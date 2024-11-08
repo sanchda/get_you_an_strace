@@ -10,8 +10,11 @@ if [ "$1" == "alpine" ]; then
 elif [ "$1" == "ubuntu" ]; then
     DOCKERFILE="Dockerfile.ubuntu"
     IMAGE_NAME="ubuntu-strace"
+elif [ "$1" == "centos" ]; then
+    DOCKERFILE="Dockerfile.centos"
+    IMAGE_NAME="centos-strace"
 else
-    echo "Invalid option. Use 'alpine' or 'ubuntu'."
+    echo "Invalid option. Use 'alpine', 'ubuntu', or 'centos'."
     exit 1
 fi
 
